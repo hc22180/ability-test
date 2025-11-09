@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职业价值观测试</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+        .container{max-width:800px;margin:0 auto;background:white;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+        .header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:40px 30px;text-align:center}
+        .header h1{font-size:32px;margin-bottom:10px}.header p{font-size:16px;opacity:.9}
+        .content{padding:40px 30px}.intro{text-align:center;margin-bottom:30px}
+        .intro h2{color:#333;margin-bottom:20px}.intro p{color:#666;line-height:1.8;margin-bottom:15px}
+        .values-intro{background:#f8f9fa;padding:20px;border-radius:10px;margin:20px 0;text-align:left}
+        .values-intro h3{color:#667eea;margin-bottom:15px}.value-item{margin-bottom:10px;color:#555;line-height:1.6}
+        .start-btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:15px 50px;font-size:18px;border-radius:50px;cursor:pointer;transition:transform .3s;margin-top:20px}
+        .start-btn:hover{transform:scale(1.05)}.test-section{display:none}
+        .progress-bar{background:#e0e0e0;height:8px;border-radius:10px;overflow:hidden;margin-bottom:30px}
+        .progress-fill{background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);height:100%;transition:width .3s}
+        .progress-info{display:flex;justify-content:space-between;margin-bottom:10px;color:#666;font-size:14px}
+        .question-card{background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:30px}
+        .question-number{color:#667eea;font-weight:bold;margin-bottom:15px;font-size:14px}
+        .question-text{color:#333;font-size:18px;line-height:1.6;margin-bottom:25px}
+        .options{display:flex;flex-direction:column;gap:12px}
+        .option{background:white;padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .3s;display:flex;align-items:center}
+        .option:hover{border-color:#667eea;background:#f0f4ff}.option.selected{border-color:#667eea;background:#667eea;color:white}
+        .option input[type="radio"]{margin-right:10px}.nav-buttons{display:flex;justify-content:space-between;margin-top:30px}
+        .btn{padding:12px 30px;border:none;border-radius:25px;cursor:pointer;font-size:16px;transition:all .3s}
+        .btn-prev{background:#e0e0e0;color:#333}.btn-prev:hover{background:#d0d0d0}
+        .btn-next{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white}.btn-next:hover{transform:scale(1.05)}
+        .btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none}.result-section{display:none}
+        .result-header{text-align:center;margin-bottom:40px}.result-header h2{color:#333;margin-bottom:10px}
+        .top-values{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:30px;border-radius:15px;margin-bottom:30px}
+        .value-rank{margin-bottom:20px}.value-rank:last-child{margin-bottom:0}
+        .value-title{font-size:24px;font-weight:bold;margin-bottom:8px}.value-desc{font-size:14px;opacity:.9}
+        .scores-chart{background:#f8f9fa;padding:20px;border-radius:10px;margin-bottom:30px}
+        .scores-chart h3{color:#333;margin-bottom:15px}.score-bar{margin-bottom:15px}
+        .score-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:14px}
+        .bar-container{background:#e0e0e0;height:10px;border-radius:5px;overflow:hidden}
+        .bar-fill{background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);height:100%}
+        .restart-btn{display:block;margin:30px auto 0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:15px 50px;font-size:18px;border-radius:50px;cursor:pointer;transition:transform .3s}
+        .restart-btn:hover{transform:scale(1.05)}
+        @media (max-width:600px){.header h1{font-size:24px}.content{padding:30px 20px}.question-text{font-size:16px}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💎 职业价值观测试</h1>
+            <p>Career Values Assessment</p>
+        </div>
+
+        <div class="content" id="introSection">
+            <div class="intro">
+                <h2>欢迎参加职业价值观测试</h2>
+                <p>职业价值观是指你在职业选择和工作中最看重的因素。了解自己的价值观有助于找到真正适合自己的职业。</p>
+                
+                <div class="values-intro">
+                    <h3>九大价值维度</h3>
+                    <div class="value-item"><strong>💰 经济报酬：</strong>高薪资、物质回报</div>
+                    <div class="value-item"><strong>🎖️ 社会地位：</strong>受人尊敬、职业声望</div>
+                    <div class="value-item"><strong>🔒 工作稳定：</strong>长期保障、可预测性</div>
+                    <div class="value-item"><strong>🚀 个人成长：</strong>学习机会、能力提升</div>
+                    <div class="value-item"><strong>💡 创新创造：</strong>发挥创意、尝试新事物</div>
+                    <div class="value-item"><strong>👥 人际关系：</strong>良好氛围、团队和谐</div>
+                    <div class="value-item"><strong>🏆 成就实现：</strong>成就感、价值体现</div>
+                    <div class="value-item"><strong>⚖️ 工作生活平衡：</strong>充足私人时间</div>
+                    <div class="value-item"><strong>🌍 社会贡献：</strong>帮助他人、社会意义</div>
+                </div>
+
+                <p><strong>测试说明：</strong>本测试共40题，请根据各项对你的重要程度作答。</p>
+                <p style="color:#667eea"><strong>温馨提示：</strong>请在安静的环境中完成测试，预计需要8分钟。</p>
+
+                <button class="start-btn" onclick="startTest()">开始测试</button>
+            </div>
+        </div>
+
+        <div class="content test-section" id="testSection">
+            <div class="progress-info">
+                <span id="progressText">进度: 0/40</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-number" id="questionNumber"></div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevQuestion()" id="prevBtn">上一题</button>
+                <button class="btn btn-next" onclick="nextQuestion()" id="nextBtn" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="content result-section" id="resultSection">
+            <div class="result-header">
+                <h2>🎉 测试结果</h2>
+                <p>您的职业价值观分析</p>
+            </div>
+
+            <div id="resultContent"></div>
+
+            <button class="restart-btn" onclick="restartTest()">重新测试</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {text:"获得高薪酬和丰厚的物质回报",type:"economic"},
+            {text:"工作能带来良好的经济收入",type:"economic"},
+            {text:"有机会通过工作获得财富积累",type:"economic"},
+            {text:"薪资福利在同行业中具有竞争力",type:"economic"},
+            {text:"工作收入能满足我理想的生活水平",type:"economic"},
+            {text:"从事受人尊敬的职业",type:"status"},
+            {text:"工作能提升我的社会地位",type:"status"},
+            {text:"在行业内获得较高的声望",type:"status"},
+            {text:"拥有体面的职业身份",type:"status"},
+            {text:"工作能让家人感到骄傲",type:"status"},
+            {text:"拥有稳定的工作和收入保障",type:"stability"},
+            {text:"工作具有长期性和可预测性",type:"stability"},
+            {text:"不用担心失业或裁员",type:"stability"},
+            {text:"工作环境和待遇有保障",type:"stability"},
+            {text:"工作能促进我的个人成长",type:"growth"},
+            {text:"有机会学习新知识和技能",type:"growth"},
+            {text:"工作具有挑战性，能提升能力",type:"growth"},
+            {text:"有明确的职业发展通道",type:"growth"},
+            {text:"能不断突破自我，实现进步",type:"growth"},
+            {text:"工作允许我发挥创造力",type:"innovation"},
+            {text:"有机会尝试新想法和新方法",type:"innovation"},
+            {text:"能够创造新事物或改进现有事物",type:"innovation"},
+            {text:"工作环境鼓励创新和冒险",type:"innovation"},
+            {text:"与同事建立良好的人际关系",type:"relationship"},
+            {text:"工作氛围融洽，团队和谐",type:"relationship"},
+            {text:"能够结识志同道合的朋友",type:"relationship"},
+            {text:"在工作中获得社交满足感",type:"relationship"},
+            {text:"通过工作获得成就感",type:"achievement"},
+            {text:"能够看到工作成果和影响力",type:"achievement"},
+            {text:"完成具有挑战性的目标",type:"achievement"},
+            {text:"工作能体现我的价值和能力",type:"achievement"},
+            {text:"获得他人对工作成果的认可",type:"achievement"},
+            {text:"工作与生活能够保持平衡",type:"balance"},
+            {text:"有充足的个人时间和自由",type:"balance"},
+            {text:"工作不会过度占用私人生活",type:"balance"},
+            {text:"有灵活的工作安排",type:"balance"},
+            {text:"工作能为社会做出贡献",type:"contribution"},
+            {text:"帮助他人或改善社会问题",type:"contribution"},
+            {text:"工作具有社会意义和价值",type:"contribution"},
+            {text:"能够对他人产生积极影响",type:"contribution"}
+        ];
+
+        let currentQuestion=0;
+        let answers=new Array(40).fill(null);
+
+        function startTest(){
+            document.getElementById('introSection').style.display='none';
+            document.getElementById('testSection').style.display='block';
+            showQuestion(0);
+        }
+
+        function showQuestion(index){
+            currentQuestion=index;
+            const question=questions[index];
+            
+            document.getElementById('questionNumber').textContent=`第 ${index+1} / 40 题`;
+            document.getElementById('questionText').textContent=question.text;
+            
+            const progress=((index+1)/40)*100;
+            document.getElementById('progressBar').style.width=progress+'%';
+            document.getElementById('progressText').textContent=`进度: ${index+1}/40`;
+            document.getElementById('progressPercent').textContent=progress.toFixed(1)+'%';
+            
+            const optionsContainer=document.getElementById('optionsContainer');
+            optionsContainer.innerHTML='';
+            
+            const options=[
+                {text:'非常重要',value:5},
+                {text:'比较重要',value:4},
+                {text:'一般',value:3},
+                {text:'不太重要',value:2},
+                {text:'完全不重要',value:1}
+            ];
+            
+            options.forEach(option=>{
+                const optionDiv=document.createElement('div');
+                optionDiv.className='option';
+                if(answers[index]===option.value){
+                    optionDiv.classList.add('selected');
+                }
+                optionDiv.innerHTML=`<input type="radio" name="q${index}" value="${option.value}"><span>${option.text}</span>`;
+                optionDiv.onclick=()=>selectOption(index,option.value);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            document.getElementById('prevBtn').disabled=index===0;
+            document.getElementById('nextBtn').disabled=answers[index]===null;
+            document.getElementById('nextBtn').textContent=index===39?'查看结果':'下一题';
+        }
+
+        function selectOption(questionIndex,value){
+            answers[questionIndex]=value;
+            document.getElementById('nextBtn').disabled=false;
+            const options=document.querySelectorAll('#optionsContainer .option');
+            options.forEach(opt=>opt.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function prevQuestion(){
+            if(currentQuestion>0)showQuestion(currentQuestion-1);
+        }
+
+        function nextQuestion(){
+            if(currentQuestion<39){
+                showQuestion(currentQuestion+1);
+            }else{
+                calculateResults();
+            }
+        }
+
+        function calculateResults(){
+            const scores={economic:0,status:0,stability:0,growth:0,innovation:0,relationship:0,achievement:0,balance:0,contribution:0};
+            
+            questions.forEach((q,i)=>{
+                scores[q.type]+=answers[i];
+            });
+            
+            document.getElementById('testSection').style.display='none';
+            document.getElementById('resultSection').style.display='block';
+            
+            displayResults(scores);
+        }
+
+        function displayResults(scores){
+            const valueNames={
+                economic:'经济报酬',
+                status:'社会地位',
+                stability:'工作稳定',
+                growth:'个人成长',
+                innovation:'创新创造',
+                relationship:'人际关系',
+                achievement:'成就实现',
+                balance:'工作生活平衡',
+                contribution:'社会贡献'
+            };
+            
+            const valueDescriptions={
+                economic:'你重视物质回报和经济收益，希望通过工作获得良好的经济保障',
+                status:'你看重社会认可和职业声望，希望从事受人尊敬的工作',
+                stability:'你追求稳定和安全感，偏好可预测的工作环境',
+                growth:'你渴望不断学习和进步，重视个人能力的提升',
+                innovation:'你喜欢创新和变革，享受探索新事物的过程',
+                relationship:'你重视人际互动和团队氛围，希望在和谐的环境中工作',
+                achievement:'你追求成就感和自我实现，希望看到工作的成果和影响力',
+                balance:'你注重生活质量，希望工作不会过度占用私人时间',
+                contribution:'你希望工作有意义，能为社会和他人带来积极影响'
+            };
+            
+            const sortedValues=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+            const top3=sortedValues.slice(0,3);
+            
+            let resultHTML=`
+                <div class="top-values">
+                    <h3 style="margin-bottom:20px">您最看重的职业价值观：</h3>
+                    ${top3.map((v,i)=>`
+                        <div class="value-rank">
+                            <div class="value-title">${['1️⃣','2️⃣','3️⃣'][i]} ${valueNames[v[0]]}</div>
+                            <div class="value-desc">${valueDescriptions[v[0]]}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="scores-chart">
+                    <h3>各价值观维度得分</h3>
+                    ${sortedValues.map(([type,score])=>`
+                        <div class="score-bar">
+                            <div class="score-label">
+                                <span>${valueNames[type]}</span>
+                                <strong style="color:#667eea">${score} 分</strong>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width:${(score/25)*100}%"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('resultContent').innerHTML=resultHTML;
+        }
+
+        function restartTest(){
+            currentQuestion=0;
+            answers=new Array(40).fill(null);
+            document.getElementById('resultSection').style.display='none';
+            document.getElementById('introSection').style.display='block';
+        }
+    </script>
+</body>
+</html>
