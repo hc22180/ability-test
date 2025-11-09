@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职业能力倾向测试</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+        .container{max-width:800px;margin:0 auto;background:white;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+        .header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:40px 30px;text-align:center}
+        .header h1{font-size:32px;margin-bottom:10px}.header p{font-size:16px;opacity:.9}
+        .content{padding:40px 30px}.intro{text-align:center;margin-bottom:30px}
+        .intro h2{color:#333;margin-bottom:20px}.intro p{color:#666;line-height:1.8;margin-bottom:15px}
+        .abilities-intro{background:#f8f9fa;padding:20px;border-radius:10px;margin:20px 0;text-align:left}
+        .abilities-intro h3{color:#667eea;margin-bottom:15px}.ability-item{margin-bottom:10px;color:#555;line-height:1.6}
+        .start-btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:15px 50px;font-size:18px;border-radius:50px;cursor:pointer;transition:transform .3s;margin-top:20px}
+        .start-btn:hover{transform:scale(1.05)}.test-section{display:none}
+        .progress-bar{background:#e0e0e0;height:8px;border-radius:10px;overflow:hidden;margin-bottom:30px}
+        .progress-fill{background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);height:100%;transition:width .3s}
+        .progress-info{display:flex;justify-content:space-between;margin-bottom:10px;color:#666;font-size:14px}
+        .question-card{background:#f8f9fa;padding:30px;border-radius:15px;margin-bottom:30px}
+        .question-number{color:#667eea;font-weight:bold;margin-bottom:15px;font-size:14px}
+        .question-text{color:#333;font-size:18px;line-height:1.6;margin-bottom:25px}
+        .options{display:flex;flex-direction:column;gap:12px}
+        .option{background:white;padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .3s;display:flex;align-items:center}
+        .option:hover{border-color:#667eea;background:#f0f4ff}.option.selected{border-color:#667eea;background:#667eea;color:white}
+        .option input[type="radio"]{margin-right:10px}.nav-buttons{display:flex;justify-content:space-between;margin-top:30px}
+        .btn{padding:12px 30px;border:none;border-radius:25px;cursor:pointer;font-size:16px;transition:all .3s}
+        .btn-prev{background:#e0e0e0;color:#333}.btn-prev:hover{background:#d0d0d0}
+        .btn-next{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white}.btn-next:hover{transform:scale(1.05)}
+        .btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none}.result-section{display:none}
+        .result-header{text-align:center;margin-bottom:40px}.result-header h2{color:#333;margin-bottom:10px}
+        .top-abilities{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:30px;border-radius:15px;margin-bottom:30px}
+        .ability-rank{margin-bottom:20px}.ability-rank:last-child{margin-bottom:0}
+        .ability-title{font-size:24px;font-weight:bold;margin-bottom:8px}.ability-desc{font-size:14px;opacity:.9}
+        .scores-chart{background:#f8f9fa;padding:20px;border-radius:10px;margin-bottom:30px}
+        .scores-chart h3{color:#333;margin-bottom:15px}.score-bar{margin-bottom:15px}
+        .score-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:14px}
+        .bar-container{background:#e0e0e0;height:10px;border-radius:5px;overflow:hidden}
+        .bar-fill{background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);height:100%}
+        .restart-btn{display:block;margin:30px auto 0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;padding:15px 50px;font-size:18px;border-radius:50px;cursor:pointer;transition:transform .3s}
+        .restart-btn:hover{transform:scale(1.05)}
+        @media (max-width:600px){.header h1{font-size:24px}.content{padding:30px 20px}.question-text{font-size:16px}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ 职业能力倾向测试</h1>
+            <p>Career Aptitude Test</p>
+        </div>
+
+        <div class="content" id="introSection">
+            <div class="intro">
+                <h2>欢迎参加职业能力倾向测试</h2>
+                <p>能力倾向是指个人在某些方面的潜在能力和天赋。了解自己的能力优势有助于选择更适合的职业方向。</p>
+                
+                <div class="abilities-intro">
+                    <h3>八大能力维度</h3>
+                    <div class="ability-item"><strong>🧠 逻辑推理：</strong>分析问题、系统思维</div>
+                    <div class="ability-item"><strong>💬 语言表达：</strong>沟通能力、文字能力</div>
+                    <div class="ability-item"><strong>🔢 数理计算：</strong>数字敏感、数据分析</div>
+                    <div class="ability-item"><strong>🎨 空间想象：</strong>视觉设计、空间规划</div>
+                    <div class="ability-item"><strong>💻 信息处理：</strong>学习能力、多任务管理</div>
+                    <div class="ability-item"><strong>🤝 人际沟通：</strong>社交能力、情商理解</div>
+                    <div class="ability-item"><strong>📊 组织管理：</strong>计划协调、团队管理</div>
+                    <div class="ability-item"><strong>🎭 艺术创造：</strong>创造力、艺术感知</div>
+                </div>
+
+                <p><strong>测试说明：</strong>本测试共50题，请根据你的实际情况客观评价。</p>
+                <p style="color:#667eea"><strong>温馨提示：</strong>请在安静的环境中完成测试，预计需要12分钟。</p>
+
+                <button class="start-btn" onclick="startTest()">开始测试</button>
+            </div>
+        </div>
+
+        <div class="content test-section" id="testSection">
+            <div class="progress-info">
+                <span id="progressText">进度: 0/50</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-number" id="questionNumber"></div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevQuestion()" id="prevBtn">上一题</button>
+                <button class="btn btn-next" onclick="nextQuestion()" id="nextBtn" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="content result-section" id="resultSection">
+            <div class="result-header">
+                <h2>🎉 测试结果</h2>
+                <p>您的能力倾向分析</p>
+            </div>
+
+            <div id="resultContent"></div>
+
+            <button class="restart-btn" onclick="restartTest()">重新测试</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {text:"我擅长分析复杂问题并找出解决方案",type:"logic"},
+            {text:"我能快速理解因果关系",type:"logic"},
+            {text:"我善于从不同角度思考问题",type:"logic"},
+            {text:"我能够识别信息中的逻辑错误",type:"logic"},
+            {text:"我擅长解决需要推理的难题",type:"logic"},
+            {text:"我能够快速掌握抽象概念",type:"logic"},
+            {text:"我善于制定系统性的解决方案",type:"logic"},
+            {text:"我能够清晰地表达自己的想法",type:"language"},
+            {text:"我擅长写作和文字表达",type:"language"},
+            {text:"我能够用恰当的语言说服他人",type:"language"},
+            {text:"我在公开场合演讲时表现自如",type:"language"},
+            {text:"我能够理解和使用复杂的词汇",type:"language"},
+            {text:"我擅长倾听并理解他人的意思",type:"language"},
+            {text:"我对数字和数据很敏感",type:"math"},
+            {text:"我擅长心算和快速计算",type:"math"},
+            {text:"我能够理解和应用数学公式",type:"math"},
+            {text:"我喜欢处理统计和数据分析工作",type:"math"},
+            {text:"我能够发现数据中的规律和趋势",type:"math"},
+            {text:"我擅长预算和财务管理",type:"math"},
+            {text:"我能够在脑海中想象3D物体",type:"spatial"},
+            {text:"我擅长看懂地图和平面图",type:"spatial"},
+            {text:"我能够准确判断距离和方位",type:"spatial"},
+            {text:"我擅长拼图和空间类游戏",type:"spatial"},
+            {text:"我能够设计或绘制图形",type:"spatial"},
+            {text:"我对色彩搭配和布局有敏感度",type:"spatial"},
+            {text:"我能够快速学习新软件或工具",type:"information"},
+            {text:"我擅长整理和归类信息",type:"information"},
+            {text:"我能够同时处理多项任务",type:"information"},
+            {text:"我善于从大量信息中提取关键点",type:"information"},
+            {text:"我能够高效地使用搜索引擎",type:"information"},
+            {text:"我擅长记忆和回忆信息",type:"information"},
+            {text:"我能够轻松与陌生人建立联系",type:"interpersonal"},
+            {text:"我善于理解他人的情绪和需求",type:"interpersonal"},
+            {text:"我能够有效处理人际冲突",type:"interpersonal"},
+            {text:"我擅长团队协作",type:"interpersonal"},
+            {text:"我能够建立和维护长期关系",type:"interpersonal"},
+            {text:"我善于给予他人情感支持",type:"interpersonal"},
+            {text:"我擅长制定计划并按计划执行",type:"management"},
+            {text:"我能够有效分配时间和资源",type:"management"},
+            {text:"我善于协调团队成员",type:"management"},
+            {text:"我能够在压力下做出决策",type:"management"},
+            {text:"我擅长监督项目进度",type:"management"},
+            {text:"我能够激励他人完成目标",type:"management"},
+            {text:"我对美感和艺术有天然的感知",type:"artistic"},
+            {text:"我能够创作原创的艺术作品",type:"artistic"},
+            {text:"我擅长用独特方式表达想法",type:"artistic"},
+            {text:"我对音乐、美术等艺术形式敏感",type:"artistic"},
+            {text:"我能够欣赏和评价艺术作品",type:"artistic"},
+            {text:"我喜欢尝试新的艺术表现形式",type:"artistic"},
+            {text:"我能够将创意转化为实际作品",type:"artistic"}
+        ];
+
+        let currentQuestion=0;
+        let answers=new Array(50).fill(null);
+
+        function startTest(){
+            document.getElementById('introSection').style.display='none';
+            document.getElementById('testSection').style.display='block';
+            showQuestion(0);
+        }
+
+        function showQuestion(index){
+            currentQuestion=index;
+            const question=questions[index];
+            
+            document.getElementById('questionNumber').textContent=`第 ${index+1} / 50 题`;
+            document.getElementById('questionText').textContent=question.text;
+            
+            const progress=((index+1)/50)*100;
+            document.getElementById('progressBar').style.width=progress+'%';
+            document.getElementById('progressText').textContent=`进度: ${index+1}/50`;
+            document.getElementById('progressPercent').textContent=progress.toFixed(1)+'%';
+            
+            const optionsContainer=document.getElementById('optionsContainer');
+            optionsContainer.innerHTML='';
+            
+            const options=[
+                {text:'非常符合',value:5},
+                {text:'比较符合',value:4},
+                {text:'一般',value:3},
+                {text:'不太符合',value:2},
+                {text:'完全不符合',value:1}
+            ];
+            
+            options.forEach(option=>{
+                const optionDiv=document.createElement('div');
+                optionDiv.className='option';
+                if(answers[index]===option.value){
+                    optionDiv.classList.add('selected');
+                }
+                optionDiv.innerHTML=`<input type="radio" name="q${index}" value="${option.value}"><span>${option.text}</span>`;
+                optionDiv.onclick=()=>selectOption(index,option.value);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            document.getElementById('prevBtn').disabled=index===0;
+            document.getElementById('nextBtn').disabled=answers[index]===null;
+            document.getElementById('nextBtn').textContent=index===49?'查看结果':'下一题';
+        }
+
+        function selectOption(questionIndex,value){
+            answers[questionIndex]=value;
+            document.getElementById('nextBtn').disabled=false;
+            const options=document.querySelectorAll('#optionsContainer .option');
+            options.forEach(opt=>opt.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function prevQuestion(){
+            if(currentQuestion>0)showQuestion(currentQuestion-1);
+        }
+
+        function nextQuestion(){
+            if(currentQuestion<49){
+                showQuestion(currentQuestion+1);
+            }else{
+                calculateResults();
+            }
+        }
+
+        function calculateResults(){
+            const scores={logic:0,language:0,math:0,spatial:0,information:0,interpersonal:0,management:0,artistic:0};
+            
+            questions.forEach((q,i)=>{
+                scores[q.type]+=answers[i];
+            });
+            
+            document.getElementById('testSection').style.display='none';
+            document.getElementById('resultSection').style.display='block';
+            
+            displayResults(scores);
+        }
+
+        function displayResults(scores){
+            const abilityNames={
+                logic:'逻辑推理能力',
+                language:'语言表达能力',
+                math:'数理计算能力',
+                spatial:'空间想象能力',
+                information:'信息处理能力',
+                interpersonal:'人际沟通能力',
+                management:'组织管理能力',
+                artistic:'艺术创造能力'
+            };
+            
+            const abilityDescriptions={
+                logic:'你在分析问题、逻辑推理方面表现出色，适合需要系统思维的工作',
+                language:'你的语言表达和沟通能力突出，善于用文字或口头表达想法',
+                math:'你对数字敏感，数理分析能力强，适合处理数据和计算的工作',
+                spatial:'你的空间想象力丰富，适合需要视觉设计和空间规划的工作',
+                information:'你擅长快速学习和处理信息，能高效管理多任务',
+                interpersonal:'你的人际交往能力优秀，善于理解他人并建立良好关系',
+                management:'你具备组织协调能力，善于计划和管理项目及团队',
+                artistic:'你富有创造力和艺术感知，适合从事创意和艺术相关工作'
+            };
+            
+            const sortedAbilities=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+            const top3=sortedAbilities.slice(0,3);
+            
+            let resultHTML=`
+                <div class="top-abilities">
+                    <h3 style="margin-bottom:20px">您的核心能力优势：</h3>
+                    ${top3.map((v,i)=>`
+                        <div class="ability-rank">
+                            <div class="ability-title">${['🥇','🥈','🥉'][i]} ${abilityNames[v[0]]}</div>
+                            <div class="ability-desc">${abilityDescriptions[v[0]]}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="scores-chart">
+                    <h3>各能力维度评分</h3>
+                    ${sortedAbilities.map(([type,score])=>{
+                        const maxScore=type==='logic'||type==='artistic'?35:30;
+                        return`
+                        <div class="score-bar">
+                            <div class="score-label">
+                                <span>${abilityNames[type]}</span>
+                                <strong style="color:#667eea">${score} / ${maxScore}</strong>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width:${(score/maxScore)*100}%"></div>
+                            </div>
+                        </div>
+                    `}).join('')}
+                </div>
+            `;
+            
+            document.getElementById('resultContent').innerHTML=resultHTML;
+        }
+
+        function restartTest(){
+            currentQuestion=0;
+            answers=new Array(50).fill(null);
+            document.getElementById('resultSection').style.display='none';
+            document.getElementById('introSection').style.display='block';
+        }
+    </script>
+</body>
+</html>
